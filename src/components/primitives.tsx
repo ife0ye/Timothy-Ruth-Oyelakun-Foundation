@@ -63,23 +63,30 @@ export function LineReveal({
   delay?: number;
   immediate?: boolean;
 }) {
+  // Watch the mask (always on screen) rather than the hidden line inside it: a line pushed fully
+  // out of its mask never counts as "in view", so it would never reveal.
   const trigger = immediate
-    ? { animate: { y: '0%' } }
-    : { whileInView: { y: '0%' }, viewport: { once: true, margin: '0px 0px -8% 0px' } };
+    ? { animate: 'shown' }
+    : { whileInView: 'shown', viewport: { once: true, margin: '0px 0px -8% 0px' } };
 
   return (
     <Tag className={className}>
       {lines.map((line, i) => (
-        <span key={i} className="block overflow-hidden pb-[0.12em] -mb-[0.12em]">
+        // Extra room above and below so tall letters (f, l, i dots) and descenders are never clipped.
+        <motion.span
+          key={i}
+          className="block overflow-hidden pt-[0.2em] pb-[0.14em] -mb-[0.34em] first:-mt-[0.2em] last:-mb-[0.14em]"
+          initial="hidden"
+          {...trigger}
+        >
           <motion.span
             className="block"
-            initial={{ y: '105%' }}
-            {...trigger}
+            variants={{ hidden: { y: '130%' }, shown: { y: '0%' } }}
             transition={{ duration: 1.05, ease: EASE_OUT, delay: delay + i * 0.09 }}
           >
             {line}
           </motion.span>
-        </span>
+        </motion.span>
       ))}
     </Tag>
   );
