@@ -13,7 +13,7 @@ export function Footer() {
 
   return (
     <footer ref={ref} className="relative overflow-hidden bg-teal-night text-paper">
-      <div className="mx-auto max-w-[88rem] px-5 pt-20 sm:px-8">
+      <div className="mx-auto max-w-[100rem] px-5 pt-20 sm:px-8">
         <div className="grid gap-12 border-b border-paper/10 pb-14 md:grid-cols-12">
           <div className="md:col-span-5">
             <div className="flex items-center gap-4">

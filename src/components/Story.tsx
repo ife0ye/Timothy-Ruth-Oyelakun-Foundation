@@ -5,7 +5,7 @@ import { LineReveal, Reveal, ScrubText } from './primitives';
 export function Story() {
   return (
     <section id="story" className="relative px-5 py-24 sm:px-8 sm:py-32 lg:py-40">
-      <div className="mx-auto max-w-[88rem]">
+      <div className="mx-auto max-w-[100rem]">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-4">
             <div className="lg:sticky lg:top-32">

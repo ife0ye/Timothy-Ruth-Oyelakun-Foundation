@@ -52,7 +52,7 @@ function PinnedPrograms() {
   return (
     <section ref={sectionRef} id="programs" className="relative" style={{ height: `calc(100vh + ${distance}px)` }}>
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-        <motion.div ref={trackRef} style={{ x }} className="flex w-max items-stretch gap-6 pl-[max(2rem,calc((100vw-88rem)/2+2rem))] pr-[8vw]">
+        <motion.div ref={trackRef} style={{ x }} className="flex w-max items-stretch gap-6 pl-[max(2rem,calc((100vw-100rem)/2+2rem))] pr-[8vw]">
           <div className="flex w-[30rem] shrink-0 flex-col justify-center pr-10">
             <Reveal>
               <p className="eyebrow mb-5 text-oxblood">{INTRO.eyebrow}</p>
@@ -79,7 +79,7 @@ function PinnedPrograms() {
           </div>
         </motion.div>
 
-        <div className="mx-auto mt-10 h-px w-[min(88rem,calc(100vw-4rem))] bg-line">
+        <div className="mx-auto mt-10 h-px w-[min(100rem,calc(100vw-4rem))] bg-line">
           <motion.div className="h-full origin-left bg-ink" style={{ scaleX: bar }} />
         </div>
       </div>
@@ -90,7 +90,7 @@ function PinnedPrograms() {
 function StackedPrograms() {
   return (
     <section id="programs" className="px-5 py-24 sm:px-8 sm:py-32">
-      <div className="mx-auto max-w-[88rem]">
+      <div className="mx-auto max-w-[100rem]">
         <Reveal>
           <p className="eyebrow mb-5 text-oxblood">{INTRO.eyebrow}</p>
         </Reveal>
@@ -129,7 +129,7 @@ function ProgramCard({ program, index, className = '' }: { program: Program; ind
           0{index + 1}
         </span>
         <span className="grid size-12 place-items-center rounded-full border border-current/15 transition-transform duration-500 ease-[var(--ease-out)] group-hover:rotate-[-12deg] group-hover:scale-110">
-          <Icon size={22} strokeWidth={1.6} />
+          <Icon strokeWidth={1.6} className="size-[1.375rem]" />
         </span>
       </div>
       <div className="mt-auto pt-12">

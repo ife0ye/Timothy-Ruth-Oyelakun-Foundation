@@ -67,7 +67,7 @@ export function Header() {
               : 'bg-transparent'
           }`}
         >
-          <nav aria-label="Main" className="mx-auto flex h-[4.5rem] max-w-[88rem] items-center justify-between px-5 sm:px-8">
+          <nav aria-label="Main" className="mx-auto flex h-[4.5rem] max-w-[100rem] items-center justify-between px-5 sm:px-8">
             <a href="#home" className="press flex items-center gap-3 rounded-full" onClick={() => setOpen(false)}>
               <img src="/images/seal-128.webp" alt="" width={44} height={44} className="size-11 rounded-full" />
               <span className="leading-tight">

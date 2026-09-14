@@ -35,7 +35,7 @@ export function Hero() {
 
   return (
     <section ref={ref} id="home" className="relative overflow-hidden pt-28 sm:pt-32">
-      <div className="mx-auto grid max-w-[88rem] items-center gap-14 px-5 pb-20 sm:px-8 lg:min-h-[calc(100svh-8rem)] lg:grid-cols-12 lg:gap-8 lg:pb-24">
+      <div className="mx-auto grid max-w-[100rem] items-center gap-14 px-5 pb-20 sm:px-8 lg:min-h-[calc(100svh-8rem)] lg:grid-cols-12 lg:gap-8 lg:pb-24">
         <motion.div style={{ y: copyY }} className="lg:col-span-7">
           <motion.p
             className="eyebrow mb-7 flex items-center gap-3 text-teal"
@@ -86,7 +86,7 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        <motion.div style={{ y: printY }} className="relative mx-auto w-full max-w-[30rem] lg:col-span-5 lg:mr-0">
+        <motion.div style={{ y: printY }} className="relative mx-auto w-full max-w-[30rem] lg:col-span-5 lg:mr-10">
           <div className="[perspective:1200px]" onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
             <motion.figure
               style={{ rotateX, rotateY }}

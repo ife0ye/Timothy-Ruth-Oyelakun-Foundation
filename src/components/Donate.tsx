@@ -74,7 +74,7 @@ export function Donate() {
   return (
     <section id="donate" className="relative overflow-hidden bg-teal-night text-paper">
       <Weave />
-      <div className="mx-auto grid max-w-[88rem] gap-16 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-12 lg:gap-8 lg:py-36">
+      <div className="mx-auto grid max-w-[100rem] gap-16 px-5 py-24 sm:px-8 sm:py-32 lg:grid-cols-12 lg:gap-8 lg:py-36">
         <div className="lg:col-span-5">
           <Reveal>
             <p className="eyebrow mb-5 text-ochre-soft">Donate</p>

@@ -11,7 +11,7 @@ import { LineReveal, Reveal } from './primitives';
 export function Contact() {
   return (
     <section id="contact" className="px-5 py-24 sm:px-8 sm:py-32 lg:py-40">
-      <div className="mx-auto grid max-w-[88rem] gap-16 lg:grid-cols-12 lg:gap-8">
+      <div className="mx-auto grid max-w-[100rem] gap-16 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-5">
           <Reveal>
             <p className="eyebrow mb-5 text-oxblood">Contact</p>
