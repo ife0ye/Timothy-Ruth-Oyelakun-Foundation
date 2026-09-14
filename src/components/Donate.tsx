@@ -11,9 +11,9 @@ import {
   TX_REF_PATTERN,
   type CurrencyCode,
 } from '../../shared/donation';
-import { ORG } from '../content';
 import { getJson, postJson } from '../lib/api';
 import { EASE_OUT } from '../lib/motion';
+import { ContactLink } from './ContactLink';
 import { LineReveal, Reveal, Weave } from './primitives';
 
 type Outcome =
@@ -23,10 +23,17 @@ type Outcome =
   | { kind: 'failed' }
   | { kind: 'cancelled' };
 
-const POINTS = [
+const POINTS: { title: string; body: React.ReactNode }[] = [
   { title: 'Any amount helps', body: 'Large or small, every gift reaches someone in a hard season.' },
   { title: 'Give from anywhere', body: 'Pay in naira or your own currency through a secure checkout.' },
-  { title: 'Give regularly', body: `Want to give monthly? Write to ${ORG.email} and we'll set it up with you.` },
+  {
+    title: 'Give regularly',
+    body: (
+      <>
+        Want to give monthly? Write to <ContactLink onDark kind="email" className="text-paper underline decoration-paper/40 underline-offset-4 hover:decoration-paper" /> and we&apos;ll set it up with you.
+      </>
+    ),
+  },
 ];
 
 function defaultCurrency(): CurrencyCode {
@@ -470,7 +477,12 @@ function OutcomePanel({ outcome, onReset }: { outcome: Outcome; onReset: () => v
     },
     pending: {
       title: 'Almost there.',
-      body: `Your payment is still being processed. Flutterwave will email your receipt as soon as it completes. If it doesn't arrive within a day, write to ${ORG.email}.`,
+      body: (
+        <>
+          Your payment is still being processed. Flutterwave will email your receipt as soon as it completes. If it doesn&apos;t arrive within a day, write to{' '}
+          <ContactLink kind="email" className="text-ink underline decoration-ink/30 underline-offset-4 hover:decoration-ink" />.
+        </>
+      ),
     },
     failed: {
       title: 'That didn’t go through.',

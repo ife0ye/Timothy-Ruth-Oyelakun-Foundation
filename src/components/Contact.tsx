@@ -5,6 +5,7 @@ import { EMAIL_PATTERN, LIMITS } from '../../shared/donation';
 import { MAPS_URL, OFFICE_HOURS, ORG } from '../content';
 import { ApiError, postJson } from '../lib/api';
 import { EASE_OUT } from '../lib/motion';
+import { ContactLink } from './ContactLink';
 import { LineReveal, Reveal } from './primitives';
 
 export function Contact() {
@@ -26,18 +27,14 @@ export function Contact() {
             <Reveal className="grid grid-cols-[6rem_1fr] gap-4 py-5">
               <dt className="text-sm text-muted">Email</dt>
               <dd className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                <a href={`mailto:${ORG.email}`} className="link-underline font-medium text-ink">
-                  {ORG.email}
-                </a>
+                <ContactLink kind="email" className="link-underline font-medium text-ink" />
                 <CopyButton value={ORG.email} />
               </dd>
             </Reveal>
             <Reveal className="grid grid-cols-[6rem_1fr] gap-4 py-5">
               <dt className="text-sm text-muted">Phone</dt>
               <dd>
-                <a href={ORG.phoneHref} className="link-underline font-medium tabular-nums text-ink">
-                  {ORG.phoneDisplay}
-                </a>
+                <ContactLink kind="phone" className="link-underline font-medium tabular-nums text-ink" />
               </dd>
             </Reveal>
             <Reveal className="grid grid-cols-[6rem_1fr] gap-4 py-5">
@@ -99,7 +96,7 @@ function CopyButton({ value }: { value: string }) {
     <button
       type="button"
       onClick={copy}
-      className="press inline-flex items-center gap-1.5 rounded-full bg-paper-2 px-3 py-1 text-xs font-semibold text-ink-soft hover:bg-paper-3"
+      className="press inline-flex items-center gap-1.5 rounded-full bg-paper-2 [@media(hover:hover)_and_(pointer:fine)]:hidden px-3 py-1 text-xs font-semibold text-ink-soft hover:bg-paper-3"
       aria-live="polite"
     >
       <AnimatePresence mode="wait" initial={false}>

@@ -2,6 +2,7 @@ import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { ArrowUp } from 'lucide-react';
 import { useRef } from 'react';
 import { NAV, ORG } from '../content';
+import { ContactLink } from './ContactLink';
 
 export function Footer() {
   const ref = useRef<HTMLElement>(null);
@@ -44,14 +45,10 @@ export function Footer() {
             <p className="eyebrow mb-4 text-paper/45">Reach us</p>
             <ul className="space-y-2.5 text-paper/80">
               <li>
-                <a href={`mailto:${ORG.email}`} className="link-underline hover:text-paper">
-                  {ORG.email}
-                </a>
+                <ContactLink onDark kind="email" className="link-underline hover:text-paper" />
               </li>
               <li>
-                <a href={ORG.phoneHref} className="link-underline hover:text-paper">
-                  {ORG.phoneDisplay}
-                </a>
+                <ContactLink onDark kind="phone" className="link-underline hover:text-paper" />
               </li>
               <li className="text-paper/60">Ogbomoso, Oyo State, Nigeria</li>
             </ul>
