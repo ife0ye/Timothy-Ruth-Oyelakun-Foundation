@@ -11,7 +11,7 @@ import vercel from './vercel.json' with { type: 'json' };
  * so the whole site (including donations and the contact form) works locally without extra tools.
  */
 function vercelApiDev(): Plugin {
-  const apiRoot = path.resolve(__dirname, 'api');
+  const apiRoot = path.resolve(import.meta.dirname, 'api');
 
   async function handle(server: ViteDevServer, req: IncomingMessage, res: ServerResponse) {
     const url = new URL(req.url ?? '/', `http://${req.headers.host}`);
@@ -79,7 +79,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react(), tailwindcss(), vercelApiDev()],
     resolve: {
-      alias: { '@': path.resolve(__dirname, './src') },
+      alias: { '@': path.resolve(import.meta.dirname, './src') },
     },
     build: {
       target: 'es2022',
