@@ -1,3 +1,177 @@
-@import './fonts.css';
-@import './tailwind.css';
-@import './theme.css';
+@import '@fontsource-variable/newsreader/opsz.css';
+@import '@fontsource-variable/newsreader/opsz-italic.css';
+@import '@fontsource-variable/hanken-grotesk/wght.css';
+@import 'tailwindcss';
+
+@theme {
+  /* Paper is sampled from the foundation's seal so the logo sits on the page seamlessly. */
+  --color-paper: #faf8f2;
+  --color-paper-2: #f1ece1;
+  --color-paper-3: #e7dfcf;
+  --color-ink: #10262d;
+  --color-ink-soft: #3f5157;
+  --color-muted: #6b7a7d;
+  --color-line: #10262d1f;
+  --color-teal: #1a4d5d;
+  --color-teal-deep: #0e3440;
+  --color-teal-night: #0a2831;
+  --color-oxblood: #8b3a3a;
+  --color-oxblood-deep: #6d2d2d;
+  --color-ochre: #c28f3c;
+  --color-ochre-soft: #e6c98f;
+
+  --font-serif: 'Newsreader Variable', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-sans: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@layer base {
+  html,
+  body {
+    /* No rubber-band bounce past the top or bottom of the page. */
+    overscroll-behavior-y: none;
+  }
+
+  html {
+    background: var(--color-paper);
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--color-ochre-soft);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-oxblood);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .display {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+    text-wrap: balance;
+  }
+
+  .heading {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    font-weight: 400;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .prose-body {
+    text-wrap: pretty;
+    hanging-punctuation: first;
+  }
+
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 350ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .link-underline:hover {
+      background-size: 100% 1px;
+    }
+  }
+
+  /* Film grain for the archival photograph. An SVG data URI keeps it CSP-safe. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.12;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.16 0 0 0 0 0.1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Pressable elements confirm the press instantly. */
+@utility press {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+@utility btn-primary {
+  @apply press inline-flex items-center justify-center gap-2.5 rounded-full bg-oxblood px-7 py-3.5 font-semibold text-paper;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled) {
+      background-color: var(--color-oxblood-deep);
+    }
+  }
+}
+
+@utility field {
+  @apply w-full rounded-xl border border-line bg-paper px-4 py-3 text-ink placeholder:text-muted/70;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+  &:focus {
+    outline: none;
+    border-color: var(--color-teal);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-teal) 14%, transparent);
+  }
+  &[aria-invalid='true'] {
+    border-color: var(--color-oxblood);
+  }
+}

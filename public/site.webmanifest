@@ -1,0 +1,8 @@
+{
+  "name": "Timothy & Ruth Oyelakun Foundation",
+  "short_name": "TROF",
+  "icons": [{ "src": "/images/seal-512.png", "sizes": "512x512", "type": "image/png" }],
+  "theme_color": "#FAF8F2",
+  "background_color": "#FAF8F2",
+  "display": "browser"
+}
