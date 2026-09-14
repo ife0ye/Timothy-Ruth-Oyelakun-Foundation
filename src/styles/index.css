@@ -37,7 +37,6 @@
 
   html {
     background: var(--color-paper);
-    scroll-behavior: smooth;
     scroll-padding-top: 5.5rem;
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
@@ -67,6 +66,12 @@
 
   button {
     cursor: pointer;
+  }
+
+  /* Sections receive focus after a section link is used; they don't need a visible ring. */
+  section[tabindex='-1']:focus,
+  main[tabindex='-1']:focus {
+    outline: none;
   }
 }
 
@@ -127,9 +132,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {

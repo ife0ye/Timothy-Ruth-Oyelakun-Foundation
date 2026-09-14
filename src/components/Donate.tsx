@@ -36,15 +36,6 @@ const POINTS: { title: string; body: React.ReactNode }[] = [
   },
 ];
 
-function defaultCurrency(): CurrencyCode {
-  const locale = navigator.language || '';
-  if (/-NG$/i.test(locale)) return 'NGN';
-  if (/-GB$/i.test(locale)) return 'GBP';
-  if (/-CA$/i.test(locale)) return 'CAD';
-  if (/-(DE|FR|IE|IT|ES|NL|BE|PT|AT|FI)$/i.test(locale)) return 'EUR';
-  if (/-US$/i.test(locale)) return 'USD';
-  return 'NGN';
-}
 
 export function Donate() {
   const [outcome, setOutcome] = useState<Outcome | null>(null);
@@ -149,6 +140,7 @@ export function Donate() {
 
 function DonationForm() {
   const id = useId();
+  // Naira first: this is a Nigerian foundation. Donors can switch currency in one tap.
   const [currency, setCurrency] = useState<CurrencyCode>('NGN');
   const [preset, setPreset] = useState<number | 'other'>(CURRENCIES.NGN.presets[1]);
   const [custom, setCustom] = useState('');
@@ -158,12 +150,6 @@ function DonationForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const customRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const initial = defaultCurrency();
-    setCurrency(initial);
-    setPreset(CURRENCIES[initial].presets[1]);
-  }, []);
 
   // If the donor comes back from checkout with the browser's back button, re-enable the form.
   useEffect(() => {
