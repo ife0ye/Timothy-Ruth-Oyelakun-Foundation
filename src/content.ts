@@ -31,7 +31,7 @@ export interface NavItem {
 export const NAV: NavItem[] = [
   { id: 'story', label: 'Their story' },
   { id: 'mission', label: 'Mission' },
-  { id: 'programs', label: 'Programs' },
+  { id: 'programs', label: 'Programmes' },
   { id: 'scholarship', label: 'Scholarship', path: '/scholarship' },
   { id: 'contact', label: 'Contact', path: '/contact' },
 ];

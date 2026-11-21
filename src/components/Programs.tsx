@@ -14,7 +14,7 @@ const TONES: Record<Program['tone'], string> = {
 };
 
 const INTRO = {
-  eyebrow: 'Programs',
+  eyebrow: 'Programmes',
   lines: ['Five ways their', 'love keeps working.'],
   body: 'Each one meets a need in our community and is shaped by the causes Timothy and Ruth cared about most.',
 };
