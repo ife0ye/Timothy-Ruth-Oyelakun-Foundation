@@ -21,18 +21,34 @@ export const OFFICE_HOURS: { label: string; days: number[]; open: number | null;
   { label: 'Sunday', days: [0], open: null, close: null },
 ];
 
-export const NAV = [
+export interface NavItem {
+  id: string;
+  label: string;
+  /** Set for links to another page; otherwise the link is to a section of the home page. */
+  path?: string;
+}
+
+export const NAV: NavItem[] = [
   { id: 'story', label: 'Their story' },
   { id: 'mission', label: 'Mission' },
   { id: 'programs', label: 'Programs' },
+  { id: 'scholarship', label: 'Scholarship', path: '/scholarship' },
   { id: 'contact', label: 'Contact' },
-] as const;
+];
+
+/** Which page is showing. Section links on other pages point back to the home page. */
+export type Page = 'home' | 'scholarship';
+
+export function navHref(item: NavItem, page: Page): string {
+  return item.path ?? (page === 'home' ? `#${item.id}` : `/#${item.id}`);
+}
 
 export interface Program {
   title: string;
   description: string;
   icon: LucideIcon;
   tone: 'teal' | 'paper' | 'oxblood' | 'sand' | 'ochre';
+  link?: { href: string; label: string };
 }
 
 export const PROGRAMS: Program[] = [
@@ -42,6 +58,7 @@ export const PROGRAMS: Program[] = [
       'Scholarships, learning materials and steady support so that students can finish what they started and reach their academic goals.',
     icon: GraduationCap,
     tone: 'teal',
+    link: { href: '/scholarship', label: 'Apply for a scholarship' },
   },
   {
     title: 'Healthcare Support',
@@ -87,3 +104,20 @@ export const GUIDING = [
     text: 'Compassion, integrity and service guide everything we do. We treat every person with dignity and respect, and we work tirelessly for change that lasts.',
   },
 ];
+
+/** The scholarship page (/scholarship). The application form's questions live in shared/scholarship.ts. */
+export const SCHOLARSHIP = {
+  /** e.g. 'Friday, 30 January 2027'. Leave as null to hide the deadline. */
+  deadline: null as string | null,
+  /** The printable form, in public/forms/. Replace the file to update it. */
+  pdfPath: '/forms/trof-scholarship-application-form.pdf',
+  intro:
+    'The Timothy & Ruth Oyelakun Foundation offers scholarships to indigent Nigerian students at public universities and polytechnics who show academic excellence and a commitment to making a positive impact in their communities.',
+  /** Where paper applications are delivered or emailed. */
+  paperAddressLines: [
+    'No. 1, Ile Oyelakun, Pa Timothy Oyelakun Close',
+    'Off Old Ogbomoso–Ilorin Road, Oke Ado, General Area',
+    'Ogbomoso, Oyo State',
+  ],
+  paperEmail: ORG.email,
+};

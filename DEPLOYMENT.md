@@ -57,6 +57,7 @@ and you'll see donations in the Flutterwave dashboard instead of getting an emai
   | `EMAIL_FROM` | `Timothy & Ruth Oyelakun Foundation <website@trofng.org>` |
   | `CONTACT_TO_EMAIL` | the inbox that should receive messages, e.g. `info@trofng.org` |
   | `DONATION_NOTIFY_EMAIL` | *(optional)* inbox for donation alerts, if different |
+  | `SCHOLARSHIP_TO_EMAIL` | *(optional)* inbox for scholarship applications, if different. Defaults to `CONTACT_TO_EMAIL` |
 
   For **Preview** deployments, use the *test* Flutterwave key so previews can never take real money.
 
@@ -92,6 +93,8 @@ adds a global limit on top:
   - [ ] the payment appears in Flutterwave **Transactions**
 - [ ] Start a donation and press **Cancel** on the checkout. You should see "No problem."
 - [ ] Send a message through the contact form and check that it arrives, and that replying goes to the sender.
+- [ ] Submit a test scholarship application at `/scholarship` with a couple of phone photos. Check that info@trofng.org
+      receives it with the documents attached, and that the applicant's confirmation email arrives.
 - [ ] Refund the test donation from the Flutterwave dashboard if you want.
 - [ ] Check the headers at <https://securityheaders.com/?q=trofng.org>. It should score **A** or **A+**.
 

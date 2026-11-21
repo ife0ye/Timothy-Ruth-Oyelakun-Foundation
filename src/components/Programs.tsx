@@ -135,6 +135,15 @@ function ProgramCard({ program, index, className = '' }: { program: Program; ind
       <div className="mt-auto pt-12">
         <h3 className="heading text-[1.95rem]">{program.title}</h3>
         <p className="prose-body mt-4 leading-relaxed text-[var(--body)]">{program.description}</p>
+        {program.link && (
+          <a
+            href={program.link.href}
+            className="press group/link mt-6 inline-flex items-center gap-2 rounded-full border border-current/20 px-4 py-2 text-sm font-semibold text-[var(--accent)] hover:border-current/50"
+          >
+            {program.link.label}
+            <ArrowRight size={15} className="transition-transform duration-300 group-hover/link:translate-x-0.5" />
+          </a>
+        )}
       </div>
     </article>
   );

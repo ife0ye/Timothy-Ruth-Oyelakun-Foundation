@@ -13,15 +13,24 @@ export function escapeHtml(value: string): string {
     .replace(/'/g, '&#39;');
 }
 
+export interface Attachment {
+  filename: string;
+  /** Base64-encoded file contents. */
+  content: string;
+}
+
 interface Message {
-  to: string;
+  to: string | string[];
   subject: string;
   text: string;
   html: string;
   replyTo?: string;
+  attachments?: Attachment[];
+  /** Milliseconds to wait for Resend. Larger for emails carrying attachments. */
+  timeout?: number;
 }
 
-export async function sendEmail({ to, subject, text, html, replyTo }: Message): Promise<void> {
+export async function sendEmail({ to, subject, text, html, replyTo, attachments, timeout = 10_000 }: Message): Promise<void> {
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
@@ -30,13 +39,14 @@ export async function sendEmail({ to, subject, text, html, replyTo }: Message): 
     },
     body: JSON.stringify({
       from: process.env.EMAIL_FROM,
-      to: [to],
+      to: Array.isArray(to) ? to : [to],
       subject: subject.replace(/[\r\n]+/g, ' '),
       text,
       html,
       ...(replyTo ? { reply_to: replyTo } : {}),
+      ...(attachments?.length ? { attachments } : {}),
     }),
-    signal: AbortSignal.timeout(10_000),
+    signal: AbortSignal.timeout(timeout),
   });
 
   if (!response.ok) {
@@ -54,4 +64,15 @@ export function htmlRows(rows: [string, string][]): string {
     )
     .join('');
   return `<table style="font:15px/1.5 -apple-system,Segoe UI,sans-serif;border-collapse:collapse">${cells}</table>`;
+}
+
+/** Several titled tables, one after another, for longer submissions. */
+export function htmlSections(sections: { title: string; rows: [string, string][] }[]): string {
+  return sections
+    .map(
+      ({ title, rows }) =>
+        `<h3 style="font:600 13px/1.4 -apple-system,Segoe UI,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8b3a3a;margin:24px 0 8px">${escapeHtml(title)}</h3>` +
+        htmlRows(rows),
+    )
+    .join('');
 }

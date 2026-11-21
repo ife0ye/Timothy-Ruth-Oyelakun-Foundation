@@ -1,10 +1,10 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
 import { useRef } from 'react';
-import { NAV, ORG } from '../content';
+import { NAV, navHref, ORG, type Page } from '../content';
 import { ContactLink } from './ContactLink';
 
-export function Footer() {
+export function Footer({ page = 'home' }: { page?: Page }) {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end end'] });
@@ -33,7 +33,7 @@ export function Footer() {
             <ul className="space-y-2.5">
               {[...NAV, { id: 'donate', label: 'Donate' }].map((item) => (
                 <li key={item.id}>
-                  <a href={`#${item.id}`} className="link-underline text-paper/80 transition-colors hover:text-paper">
+                  <a href={navHref(item, page)} className="link-underline text-paper/80 transition-colors hover:text-paper">
                     {item.label}
                   </a>
                 </li>

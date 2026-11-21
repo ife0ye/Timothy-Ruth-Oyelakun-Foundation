@@ -86,6 +86,13 @@ export default defineConfig(({ mode }) => {
       sourcemap: false,
       // Never inline assets as data: URIs, so the strict Content-Security-Policy can stay strict.
       assetsInlineLimit: 0,
+      // One HTML file per page. Vercel's cleanUrls serves scholarship.html at /scholarship.
+      rolldownOptions: {
+        input: {
+          main: path.resolve(import.meta.dirname, 'index.html'),
+          scholarship: path.resolve(import.meta.dirname, 'scholarship.html'),
+        },
+      },
     },
     preview: {
       headers: previewHeaders,

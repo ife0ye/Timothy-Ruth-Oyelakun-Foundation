@@ -1,15 +1,17 @@
 import { AnimatePresence, LayoutGroup, motion, useMotionValueEvent, useScroll, useSpring } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
-import { NAV, ORG } from '../content';
+import { NAV, navHref, ORG, type NavItem, type Page } from '../content';
 import { EASE_DRAWER, EASE_OUT } from '../lib/motion';
 
-const SECTION_IDS = ['home', ...NAV.map((n) => n.id), 'donate'];
+const SECTION_IDS = ['home', ...NAV.filter((n) => !n.path).map((n) => n.id), 'donate'];
+const DONATE: NavItem = { id: 'donate', label: 'Donate' };
 
-export function Header() {
+export function Header({ page = 'home' }: { page?: Page }) {
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState('home');
+  const [active, setActive] = useState<string>(page);
+  const homeHref = page === 'home' ? '#home' : '/';
   const menuButton = useRef<HTMLButtonElement>(null);
 
   const { scrollY, scrollYProgress } = useScroll();
@@ -23,6 +25,8 @@ export function Header() {
   });
 
   useEffect(() => {
+    // Other pages have a single fixed highlight; only the home page tracks its sections.
+    if (page !== 'home') return;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) if (entry.isIntersecting) setActive(entry.target.id);
@@ -34,7 +38,7 @@ export function Header() {
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     if (!open) return;
@@ -68,7 +72,7 @@ export function Header() {
           }`}
         >
           <nav aria-label="Main" className="mx-auto flex h-[4.5rem] max-w-[100rem] items-center justify-between px-5 sm:px-8">
-            <a href="#home" className="press flex items-center gap-3 rounded-full" onClick={() => setOpen(false)}>
+            <a href={homeHref} className="press flex items-center gap-3 rounded-full" onClick={() => setOpen(false)}>
               <img src="/images/seal-128.webp" alt="" width={44} height={44} className="size-11 rounded-full" />
               <span className="leading-tight">
                 <span className="block font-serif text-[1.05rem] tracking-[-0.01em] text-ink">Timothy &amp; Ruth Oyelakun</span>
@@ -81,8 +85,8 @@ export function Header() {
                 {NAV.map((item) => (
                   <li key={item.id}>
                     <a
-                      href={`#${item.id}`}
-                      aria-current={active === item.id ? 'true' : undefined}
+                      href={navHref(item, page)}
+                      aria-current={active === item.id ? (item.path ? 'page' : 'true') : undefined}
                       className="relative block rounded-full px-4 py-2 text-[0.95rem] text-ink-soft transition-colors duration-200 hover:text-ink aria-[current]:text-ink"
                     >
                       {active === item.id && (
@@ -100,7 +104,7 @@ export function Header() {
             </LayoutGroup>
 
             <div className="flex items-center gap-2">
-              <a href="#donate" className="btn-primary hidden px-5 py-2.5 text-[0.95rem] sm:inline-flex" onClick={() => setOpen(false)}>
+              <a href={navHref(DONATE, page)} className="btn-primary hidden px-5 py-2.5 text-[0.95rem] sm:inline-flex" onClick={() => setOpen(false)}>
                 Donate
               </a>
               <button
@@ -143,7 +147,7 @@ export function Header() {
             transition={{ duration: 0.55, ease: EASE_DRAWER }}
           >
             <ul className="flex flex-col">
-              {[...NAV, { id: 'donate', label: 'Donate' }].map((item, i) => (
+              {[...NAV, DONATE].map((item, i) => (
                 <motion.li
                   key={item.id}
                   className="border-b border-line"
@@ -152,7 +156,8 @@ export function Header() {
                   transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.12 + i * 0.05 }}
                 >
                   <a
-                    href={`#${item.id}`}
+                    href={navHref(item, page)}
+                    aria-current={item.path && active === item.id ? 'page' : undefined}
                     onClick={() => setOpen(false)}
                     className="heading flex items-baseline justify-between py-4 text-[2.4rem] text-ink"
                   >
