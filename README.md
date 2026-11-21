@@ -3,7 +3,18 @@
 The foundation's website, built with React, Vite, Tailwind CSS and Motion, with donations through
 Flutterwave and the contact and scholarship forms through Resend. Hosted on Vercel.
 
-Two pages: the home page (`index.html`) and the scholarship page (`scholarship.html`, served at `/scholarship`).
+Four pages, each an HTML file at the project root that Vercel serves without the `.html`:
+
+| URL | HTML file | Page component |
+| --- | --- | --- |
+| `/` | `index.html` | `src/pages/Home.tsx`: the foundation's story, mission, programmes and a pointer to the scholarship |
+| `/scholarship` | `scholarship.html` | `src/pages/Scholarship.tsx` |
+| `/donate` | `donate.html` | `src/pages/Donate.tsx` |
+| `/contact` | `contact.html` | `src/pages/Contact.tsx` |
+
+To add a page: create the HTML file, an entry in `src/entries/`, a component in `src/pages/`, and add it to
+`rolldownOptions.input` in `vite.config.ts` and to `public/sitemap.xml`. Old links to `/#donate` and `/#contact`
+are forwarded to the new pages by `src/entries/home.tsx`.
 
 **Going live? Follow [DEPLOYMENT.md](DEPLOYMENT.md).**
 
@@ -27,6 +38,7 @@ headers as production, so problems with the Content-Security-Policy show up befo
 | Scholarship questions, CGPA rules, document list | `shared/scholarship.ts` |
 | Printable scholarship form | `public/forms/trof-scholarship-application-form.pdf` |
 | Currencies, preset amounts, min/max gift | `shared/donation.ts` |
+| Pages | `src/pages/` (each wrapped in `PageShell` for the header and footer) |
 | Page sections | `src/components/` |
 | Colours, fonts, easing curves | `src/styles/index.css` (`@theme`) |
 | Serverless API (donations, webhook, contact, scholarship) | `api/` |
@@ -37,7 +49,7 @@ headers as production, so problems with the Content-Security-Policy show up befo
 
 1. The donor picks an amount → `POST /api/donations/create` validates it and asks Flutterwave for a
    hosted checkout link. Card details are only ever entered on Flutterwave's page.
-2. After paying, Flutterwave sends the donor back to the site with a reference. The site calls
+2. After paying, Flutterwave sends the donor back to `/donate` with a reference. The site calls
    `GET /api/donations/verify`, which asks Flutterwave directly whether the payment succeeded and
    returns only the outcome and amount.
 3. Separately, Flutterwave calls `POST /api/donations/webhook`. The site checks the secret hash,

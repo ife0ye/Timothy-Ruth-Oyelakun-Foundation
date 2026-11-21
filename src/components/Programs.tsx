@@ -16,7 +16,7 @@ const TONES: Record<Program['tone'], string> = {
 const INTRO = {
   eyebrow: 'Programs',
   lines: ['Five ways their', 'love keeps working.'],
-  body: 'Targeted initiatives that meet real needs in our community, each one shaped by the causes Timothy and Ruth cared about most.',
+  body: 'Each one meets a need in our community and is shaped by the causes Timothy and Ruth cared about most.',
 };
 
 export function Programs() {
@@ -72,7 +72,7 @@ function PinnedPrograms() {
 
           <div className="flex w-[24rem] shrink-0 flex-col justify-center pl-8">
             <p className="heading text-[2.2rem] text-ink">Every programme is funded by people who care.</p>
-            <a href="#donate" className="btn-primary group mt-8 self-start">
+            <a href="/donate" className="btn-primary group mt-8 self-start">
               Fund this work
               <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
@@ -108,7 +108,7 @@ function StackedPrograms() {
         </ul>
 
         <Reveal className="mt-12">
-          <a href="#donate" className="btn-primary group">
+          <a href="/donate" className="btn-primary group">
             Fund this work
             <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
           </a>
@@ -128,7 +128,7 @@ function ProgramCard({ program, index, className = '' }: { program: Program; ind
         <span className="font-serif text-[4.5rem] italic leading-[0.8] tracking-[-0.04em] text-[var(--accent)]">
           0{index + 1}
         </span>
-        <span className="grid size-12 place-items-center rounded-full border border-current/15 transition-transform duration-500 ease-[var(--ease-out)] group-hover:rotate-[-12deg] group-hover:scale-110">
+        <span className="grid size-12 place-items-center rounded-full border border-current/15 transition-transform duration-300 ease-[var(--ease-out)] group-hover:rotate-[-12deg] group-hover:scale-110">
           <Icon strokeWidth={1.6} className="size-[1.375rem]" />
         </span>
       </div>

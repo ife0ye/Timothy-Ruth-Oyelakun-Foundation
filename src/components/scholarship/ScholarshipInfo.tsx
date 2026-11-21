@@ -2,16 +2,12 @@ import { motion } from 'motion/react';
 import type { ReactNode } from 'react';
 import { ArrowDown, ArrowRight, Check, Download } from 'lucide-react';
 import { SCHOLARSHIP } from '../../content';
-import { EASE_OUT } from '../../lib/motion';
+import { EASE_OUT, useRise } from '../../lib/motion';
 import { LineReveal, Reveal, Weave } from '../primitives';
 
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 16 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.9, ease: EASE_OUT, delay },
-});
-
 export function ScholarshipIntro() {
+  const rise = useRise('16px');
+  const fadeUp = (delay: number) => ({ initial: rise.from, animate: rise.to, transition: { duration: 0.9, ease: EASE_OUT, delay } });
   return (
     <section id="home" className="relative overflow-hidden pt-28 sm:pt-32">
       <div className="mx-auto grid max-w-[100rem] items-end gap-14 px-5 pb-20 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-28 lg:pt-16">
@@ -116,8 +112,7 @@ export function Eligibility() {
                 </p>
               </div>
               <span
-                aria-hidden
-                // Stacked on phones it sits in the gap between the cards; side by side it sits on the seam.
+                // Read aloud too, so the two routes are heard as alternatives. Stacked on phones it sits in the gap between the cards; side by side it sits on the seam.
                 className="eyebrow relative z-10 -my-6 mx-auto grid size-11 place-items-center rounded-full bg-ochre text-[0.65rem] text-ink ring-4 ring-paper-2 sm:absolute sm:left-1/2 sm:top-1/2 sm:my-0 sm:-translate-x-1/2 sm:-translate-y-1/2"
               >
                 or

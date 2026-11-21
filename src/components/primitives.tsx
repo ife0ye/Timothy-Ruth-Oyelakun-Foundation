@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform, type MotionValue } from 'motion/react';
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'motion/react';
 import { useRef, type ElementType, type ReactNode } from 'react';
-import { EASE_OUT } from '../lib/motion';
+import { EASE_OUT, useRise } from '../lib/motion';
 
 /**
  * A strip of narrow woven bands, after the striped aso-oke cloth Timothy and Ruth wear
@@ -36,11 +36,12 @@ export function Reveal({
   as?: 'div' | 'li' | 'p' | 'section';
 }) {
   const Component = motion[as];
+  const rise = useRise('28px');
   return (
     <Component
       className={className}
-      initial={{ opacity: 0, y: 28, filter: 'blur(6px)' }}
-      whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      initial={{ ...rise.from, filter: 'blur(6px)' }}
+      whileInView={{ ...rise.to, filter: 'blur(0px)' }}
       viewport={{ once: true, margin: '0px 0px -12% 0px' }}
       transition={{ duration: 0.9, ease: EASE_OUT, delay }}
     >
@@ -65,6 +66,11 @@ export function LineReveal({
 }) {
   // Watch the mask (always on screen) rather than the hidden line inside it: a line pushed fully
   // out of its mask never counts as "in view", so it would never reveal.
+  const reduce = useReducedMotion();
+  // A transform string runs off the main thread; with less motion requested, lines fade instead.
+  const variants = reduce
+    ? { hidden: { opacity: 0 }, shown: { opacity: 1 } }
+    : { hidden: { transform: 'translateY(130%)' }, shown: { transform: 'translateY(0%)' } };
   const trigger = immediate
     ? { animate: 'shown' }
     : { whileInView: 'shown', viewport: { once: true, margin: '0px 0px -8% 0px' } };
@@ -81,7 +87,7 @@ export function LineReveal({
         >
           <motion.span
             className="block"
-            variants={{ hidden: { y: '130%' }, shown: { y: '0%' } }}
+            variants={variants}
             transition={{ duration: 1.05, ease: EASE_OUT, delay: delay + i * 0.09 }}
           >
             {line}

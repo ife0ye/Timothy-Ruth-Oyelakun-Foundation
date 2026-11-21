@@ -46,7 +46,7 @@ export function Story() {
           <Reveal className="mx-auto mt-10 flex max-w-[62rem] items-center gap-4">
             <span className="h-px w-12 bg-oxblood" />
             <p className="font-serif text-lg italic text-ink-soft">
-              A testament to their belief in the dignity and potential of every human being.
+              They believed in the dignity and potential of every human being.
             </p>
           </Reveal>
         </div>

@@ -16,7 +16,7 @@ export function Contact() {
           <Reveal>
             <p className="eyebrow mb-5 text-oxblood">Contact</p>
           </Reveal>
-          <LineReveal className="heading text-[clamp(2.4rem,4.4vw,3.9rem)] text-ink" lines={['Write to us,', 'call, or visit.']} />
+          <LineReveal as="h1" className="heading text-[clamp(2.4rem,4.4vw,3.9rem)] text-ink" lines={['Write to us,', 'call, or visit.']} />
           <Reveal delay={0.1}>
             <p className="prose-body mt-6 max-w-md text-lg leading-relaxed text-ink-soft">
               Questions about our work, a partnership, or someone who needs help? We would love to hear from you.
@@ -247,7 +247,7 @@ function ContactForm() {
             >
               <Check size={28} />
             </motion.span>
-            <h3 className="heading mt-8 text-[2.4rem] text-ink">Message sent.</h3>
+            <h2 className="heading mt-8 text-[2.4rem] text-ink">Message sent.</h2>
             <p className="mt-3 max-w-sm text-lg text-ink-soft">
               Thank you for writing. We will reply to <span className="font-medium text-ink">{state.email}</span> as soon as we can.
             </p>
@@ -262,7 +262,7 @@ function ContactForm() {
             exit={{ opacity: 0, filter: 'blur(6px)' }}
             transition={{ duration: 0.25 }}
           >
-            <h3 className="heading text-[2rem] text-ink">Send a message</h3>
+            <h2 className="heading text-[2rem] text-ink">Send a message</h2>
 
             {/* Hidden from people; bots tend to fill it in. */}
             <div aria-hidden className="absolute -left-[9999px] h-px w-px overflow-hidden">

@@ -1,10 +1,9 @@
 import { AnimatePresence, LayoutGroup, motion, useMotionValueEvent, useScroll, useSpring } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
-import { NAV, navHref, ORG, type NavItem, type Page } from '../content';
+import { DONATE_LINK as DONATE, NAV, navHref, ORG, type Page } from '../content';
 import { EASE_DRAWER, EASE_OUT } from '../lib/motion';
 
-const SECTION_IDS = ['home', ...NAV.filter((n) => !n.path).map((n) => n.id), 'donate'];
-const DONATE: NavItem = { id: 'donate', label: 'Donate' };
+const SECTION_IDS = ['home', ...NAV.filter((n) => !n.path).map((n) => n.id)];
 
 export function Header({ page = 'home' }: { page?: Page }) {
   const [open, setOpen] = useState(false);
@@ -44,10 +43,17 @@ export function Header({ page = 'home' }: { page?: Page }) {
     if (!open) return;
     const root = document.documentElement;
     root.style.overflow = 'hidden';
+    // The open menu covers the page, so keyboard and screen-reader users stay inside it: the page
+    // behind becomes inert, and focus moves to the first menu link.
+    const behind = [document.getElementById('main'), document.querySelector('footer'), document.querySelector('a[href="#main"]')].filter((el): el is HTMLElement => Boolean(el));
+    behind.forEach((el) => (el.inert = true));
+    const frame = requestAnimationFrame(() => document.querySelector<HTMLElement>('#mobile-menu a')?.focus());
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
     window.addEventListener('keydown', onKey);
     return () => {
+      cancelAnimationFrame(frame);
       root.style.overflow = '';
+      behind.forEach((el) => (el.inert = false));
       window.removeEventListener('keydown', onKey);
       menuButton.current?.focus();
     };
@@ -58,7 +64,7 @@ export function Header({ page = 'home' }: { page?: Page }) {
   return (
     <>
       <header
-        className="fixed inset-x-0 top-0 z-50 transition-transform duration-500"
+        className="fixed inset-x-0 top-0 z-50 transition-transform duration-300"
         style={{
           transform: showBar ? 'translateY(0)' : 'translateY(-100%)',
           transitionTimingFunction: 'var(--ease-drawer)',
@@ -67,7 +73,7 @@ export function Header({ page = 'home' }: { page?: Page }) {
         <div
           className={`relative transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
             scrolled && !open
-              ? 'bg-paper/80 shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl backdrop-saturate-150'
+              ? 'bg-paper/80 shadow-[0_1px_0_var(--color-line)] backdrop-blur-xl backdrop-saturate-150 reduce-transparency:bg-paper reduce-transparency:backdrop-blur-none'
               : 'bg-transparent'
           }`}
         >
@@ -104,7 +110,7 @@ export function Header({ page = 'home' }: { page?: Page }) {
             </LayoutGroup>
 
             <div className="flex items-center gap-2">
-              <a href={navHref(DONATE, page)} className="btn-primary hidden px-5 py-2.5 text-[0.95rem] sm:inline-flex" onClick={() => setOpen(false)}>
+              <a href={navHref(DONATE, page)} aria-current={page === 'donate' ? 'page' : undefined} className="btn-primary hidden px-5 py-2.5 text-[0.95rem] sm:inline-flex" onClick={() => setOpen(false)}>
                 Donate
               </a>
               <button

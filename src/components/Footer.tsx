@@ -1,7 +1,7 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react';
 import { ArrowUp } from 'lucide-react';
 import { useRef } from 'react';
-import { NAV, navHref, ORG, type Page } from '../content';
+import { DONATE_LINK, NAV, navHref, ORG, type Page } from '../content';
 import { ContactLink } from './ContactLink';
 
 export function Footer({ page = 'home' }: { page?: Page }) {
@@ -29,9 +29,9 @@ export function Footer({ page = 'home' }: { page?: Page }) {
           </div>
 
           <nav aria-label="Footer" className="md:col-span-3 md:col-start-7">
-            <p className="eyebrow mb-4 text-paper/45">Explore</p>
+            <p className="eyebrow mb-4 text-paper/60">Explore</p>
             <ul className="space-y-2.5">
-              {[...NAV, { id: 'donate', label: 'Donate' }].map((item) => (
+              {[...NAV, DONATE_LINK].map((item) => (
                 <li key={item.id}>
                   <a href={navHref(item, page)} className="link-underline text-paper/80 transition-colors hover:text-paper">
                     {item.label}
@@ -42,7 +42,7 @@ export function Footer({ page = 'home' }: { page?: Page }) {
           </nav>
 
           <div className="md:col-span-3">
-            <p className="eyebrow mb-4 text-paper/45">Reach us</p>
+            <p className="eyebrow mb-4 text-paper/60">Reach us</p>
             <ul className="space-y-2.5 text-paper/80">
               <li>
                 <ContactLink onDark kind="email" className="link-underline hover:text-paper" />
@@ -57,7 +57,7 @@ export function Footer({ page = 'home' }: { page?: Page }) {
 
         <div className="flex flex-col-reverse items-start justify-between gap-4 py-6 text-sm text-paper/55 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} {ORG.name}. All rights reserved.</p>
-          <a href="#home" className="press group inline-flex items-center gap-2 rounded-full border border-paper/15 px-4 py-2 text-paper/80 hover:border-paper/40 hover:text-paper">
+          <a href="#main" className="press group inline-flex items-center gap-2 rounded-full border border-paper/15 px-4 py-2 text-paper/80 hover:border-paper/40 hover:text-paper">
             Back to top
             <ArrowUp size={14} className="transition-transform duration-300 group-hover:-translate-y-0.5" />
           </a>

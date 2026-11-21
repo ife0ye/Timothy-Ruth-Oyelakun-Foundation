@@ -79,7 +79,7 @@ export function Donate() {
           <Reveal>
             <p className="eyebrow mb-5 text-ochre-soft">Donate</p>
           </Reveal>
-          <LineReveal className="display text-[clamp(3rem,6vw,5.6rem)]" lines={['Give in', <em key="e">their name.</em>]} />
+          <LineReveal as="h1" className="display text-[clamp(3rem,6vw,5.6rem)]" lines={['Give in', <em key="e">their name.</em>]} />
           <Reveal delay={0.1}>
             <p className="prose-body mt-8 max-w-[30rem] text-lg leading-relaxed text-paper/75">
               Timothy and Ruth gave quietly and generously. A gift today helps pay a school fee, a hospital bill or the
@@ -494,7 +494,7 @@ function OutcomePanel({ outcome, onReset }: { outcome: Outcome; onReset: () => v
           transition={{ type: 'spring', bounce: 0.4, duration: 0.8, delay: 0.1 }}
         />
       )}
-      <h3 className="heading mt-8 text-[2.8rem] text-ink">{copy.title}</h3>
+      <h2 className="heading mt-8 text-[2.8rem] text-ink">{copy.title}</h2>
       <p className="prose-body mt-4 max-w-sm text-lg leading-relaxed text-ink-soft">{copy.body}</p>
       <button type="button" onClick={onReset} className="press mt-10 inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 font-semibold text-ink hover:border-ink/40">
         <RotateCcw size={16} />

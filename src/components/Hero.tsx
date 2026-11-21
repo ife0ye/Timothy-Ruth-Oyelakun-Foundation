@@ -1,13 +1,14 @@
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import { useRef, type PointerEvent } from 'react';
-import { EASE_OUT, useFinePointer } from '../lib/motion';
+import { EASE_OUT, useFinePointer, useRise } from '../lib/motion';
 import { LineReveal, Weave } from './primitives';
 
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const fine = useFinePointer();
+  const rise = useRise('16px');
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
   const printY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 140]);
@@ -62,8 +63,8 @@ export function Hero() {
 
           <motion.p
             className="prose-body mt-8 max-w-[34rem] text-[1.2rem] leading-relaxed text-ink-soft"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={rise.from}
+            animate={rise.to}
             transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.55 }}
           >
             The Timothy &amp; Ruth Oyelakun Foundation continues the way they lived: standing beside the less privileged
@@ -72,11 +73,11 @@ export function Hero() {
 
           <motion.div
             className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={rise.from}
+            animate={rise.to}
             transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.7 }}
           >
-            <a href="#donate" className="btn-primary group">
+            <a href="/donate" className="btn-primary group">
               Give in their name
               <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>

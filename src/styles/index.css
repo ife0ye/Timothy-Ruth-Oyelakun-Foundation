@@ -3,6 +3,9 @@
 @import '@fontsource-variable/hanken-grotesk/wght.css';
 @import 'tailwindcss';
 
+/* Visitors who ask their device for less transparency get solid surfaces instead of frosted glass. */
+@custom-variant reduce-transparency (@media (prefers-reduced-transparency: reduce));
+
 @theme {
   /* Paper is sampled from the foundation's seal so the logo sits on the page seamlessly. */
   --color-paper: #faf8f2;
@@ -10,7 +13,8 @@
   --color-paper-3: #e7dfcf;
   --color-ink: #10262d;
   --color-ink-soft: #3f5157;
-  --color-muted: #6b7a7d;
+  /* Darkest it can be while still reading as secondary: AA (4.5:1) on every paper tone, even paper-3. */
+  --color-muted: #566467;
   --color-line: #10262d1f;
   --color-teal: #1a4d5d;
   --color-teal-deep: #0e3440;

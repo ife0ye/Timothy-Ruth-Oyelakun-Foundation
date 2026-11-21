@@ -11,6 +11,8 @@ export interface FieldProps {
   label: string;
   value: string;
   onChange: (name: AnswerKey, value: string) => void;
+  /** Called when the field loses focus, so problems show while the applicant is still nearby. */
+  onBlur?: (name: AnswerKey) => void;
   error?: string;
   hint?: string;
   optional?: boolean;
@@ -52,6 +54,7 @@ export function TextField({
   label,
   value,
   onChange,
+  onBlur,
   error,
   hint,
   optional,
@@ -88,6 +91,7 @@ export function TextField({
         list={list}
         value={value}
         onChange={(e) => onChange(name, e.target.value)}
+        onBlur={() => onBlur?.(name)}
         aria-invalid={Boolean(error)}
         aria-describedby={error || hint ? `${id}-help` : undefined}
         className="field"
@@ -97,7 +101,7 @@ export function TextField({
   );
 }
 
-export function TextArea({ uid, name, label, value, onChange, error, hint, className, max = 400 }: FieldProps & { max?: number }) {
+export function TextArea({ uid, name, label, value, onChange, onBlur, error, hint, className, max = 400 }: FieldProps & { max?: number }) {
   const id = fieldId(uid, name);
   return (
     <div className={className}>
@@ -109,6 +113,7 @@ export function TextArea({ uid, name, label, value, onChange, error, hint, class
         maxLength={max}
         value={value}
         onChange={(e) => onChange(name, e.target.value)}
+        onBlur={() => onBlur?.(name)}
         aria-invalid={Boolean(error)}
         aria-describedby={error || hint ? `${id}-help` : undefined}
         className="field resize-y"
@@ -124,6 +129,7 @@ export function SelectField({
   label,
   value,
   onChange,
+  onBlur,
   error,
   hint,
   className,
@@ -141,6 +147,7 @@ export function SelectField({
           name={name}
           value={value}
           onChange={(e) => onChange(name, e.target.value)}
+          onBlur={() => onBlur?.(name)}
           aria-invalid={Boolean(error)}
           aria-describedby={error || hint ? `${id}-help` : undefined}
           className={`field appearance-none pr-11 ${value ? '' : 'text-muted'}`}
@@ -206,8 +213,8 @@ export function ChoiceField({
                 <motion.span
                   className="size-2 rounded-full bg-paper"
                   initial={false}
-                  animate={{ scale: checked ? 1 : 0 }}
-                  transition={{ type: 'spring', bounce: 0.4, duration: 0.3 }}
+                  animate={{ scale: checked ? 1 : 0.5, opacity: checked ? 1 : 0 }}
+                  transition={{ type: 'spring', bounce: 0, duration: 0.25 }}
                 />
               </span>
               <span className="leading-snug">
@@ -230,6 +237,7 @@ export function AddressGroup({
   values,
   errors,
   onChange,
+  onBlur,
   whose,
 }: {
   uid: string;
@@ -237,6 +245,7 @@ export function AddressGroup({
   values: Record<AnswerKey, string>;
   errors: Partial<Record<AnswerKey, string>>;
   onChange: (name: AnswerKey, value: string) => void;
+  onBlur?: (name: AnswerKey) => void;
   whose: 'Your' | 'Their';
 }) {
   return (
@@ -247,6 +256,7 @@ export function AddressGroup({
         label="Contact address"
         value={values[keys.address]}
         onChange={onChange}
+        onBlur={onBlur}
         error={errors[keys.address]}
         className="sm:col-span-2"
       />
@@ -257,6 +267,7 @@ export function AddressGroup({
         placeholder="e.g. Ogbomoso North"
         value={values[keys.lga]}
         onChange={onChange}
+        onBlur={onBlur}
         error={errors[keys.lga]}
       />
       <SelectField
@@ -267,6 +278,7 @@ export function AddressGroup({
         options={NIGERIAN_STATES}
         value={values[keys.state]}
         onChange={onChange}
+        onBlur={onBlur}
         error={errors[keys.state]}
       />
     </>
@@ -367,7 +379,9 @@ export function DocumentSlot({
             {label}
             <span className={`text-xs font-normal ${required ? 'text-oxblood' : 'text-muted'}`}>{required ? 'Required' : 'Optional for you'}</span>
           </p>
-          <p className="mt-1 text-sm text-muted">{hint}</p>
+          <p id={`${id}-hint`} className="mt-1 text-sm text-muted">
+            {hint}
+          </p>
         </div>
         <button
           id={id}
@@ -375,10 +389,12 @@ export function DocumentSlot({
           disabled={full || busy}
           onClick={() => input.current?.click()}
           aria-invalid={Boolean(error)}
+          aria-describedby={error ? `${id}-error` : `${id}-hint`}
           className="press inline-flex shrink-0 items-center gap-2 rounded-full bg-paper-2 px-4 py-2 text-sm font-semibold text-ink hover:bg-paper-3 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {busy ? <Loader2 size={15} className="animate-spin" /> : <Paperclip size={15} />}
           {busy ? 'Preparing…' : files.length ? 'Add another' : 'Choose file'}
+          <span className="sr-only"> for your {label.toLowerCase()}</span>
         </button>
         <input
           ref={input}
@@ -412,7 +428,7 @@ export function DocumentSlot({
                   layout
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: 12, transition: { duration: 0.15 } }}
+                  exit={{ opacity: 0, y: -4, transition: { duration: 0.15 } }}
                   transition={{ duration: 0.22, ease: EASE_OUT }}
                   className="flex items-center gap-3 rounded-xl bg-paper-2 py-2 pl-3 pr-1.5"
                 >
@@ -438,7 +454,11 @@ export function DocumentSlot({
         )}
       </AnimatePresence>
 
-      {error && <p className="pt-3 text-sm text-oxblood">{error}</p>}
+      {error && (
+        <p id={`${id}-error`} className="pt-3 text-sm text-oxblood">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

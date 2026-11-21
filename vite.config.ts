@@ -86,11 +86,13 @@ export default defineConfig(({ mode }) => {
       sourcemap: false,
       // Never inline assets as data: URIs, so the strict Content-Security-Policy can stay strict.
       assetsInlineLimit: 0,
-      // One HTML file per page. Vercel's cleanUrls serves scholarship.html at /scholarship.
+      // One HTML file per page. Vercel's cleanUrls serves e.g. donate.html at /donate.
       rolldownOptions: {
         input: {
           main: path.resolve(import.meta.dirname, 'index.html'),
           scholarship: path.resolve(import.meta.dirname, 'scholarship.html'),
+          donate: path.resolve(import.meta.dirname, 'donate.html'),
+          contact: path.resolve(import.meta.dirname, 'contact.html'),
         },
       },
     },

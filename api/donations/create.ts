@@ -34,7 +34,7 @@ export async function POST(request: Request): Promise<Response> {
         tx_ref: txRef,
         amount,
         currency,
-        redirect_url: `${site}/`,
+        redirect_url: `${site}/donate`,
         session_duration: 30,
         customer: { email, name, ...(phone ? { phonenumber: phone } : {}) },
         customizations: {

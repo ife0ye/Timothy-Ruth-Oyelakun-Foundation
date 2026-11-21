@@ -106,8 +106,21 @@ export function ApplicationForm() {
       if (name === 'institutionType' && !LEVELS[value as InstitutionType]?.includes(a.level)) next.level = '';
       return next;
     });
-    if (errors[name]) setErrors((e) => ({ ...e, [name]: undefined }));
+    setErrors((e) => {
+      const next = { ...e, [name]: undefined };
+      // The CGPA's verdict depends on the scale and the student's status, so recheck it when those change.
+      if (name === 'cgpaScale' || name === 'admission') next.cgpa = undefined;
+      return next;
+    });
     if (phase.name === 'error') setPhase({ name: 'editing' });
+  };
+
+  // Check a field as soon as the applicant leaves it, so a mistake shows while they're still next to it.
+  // Empty fields are left alone: tabbing past one shouldn't be met with an error.
+  const check = (name: AnswerKey) => {
+    if (!answers[name].trim()) return;
+    const message = validateAnswers(answers)[name];
+    if (message) setErrors((e) => ({ ...e, [name]: message }));
   };
 
   const totalBytes = DOCUMENT_KEYS.reduce((sum, key) => sum + files[key].reduce((s, f) => s + f.file.size, 0), 0);
@@ -219,8 +232,8 @@ export function ApplicationForm() {
   const current = STEPS[step]!;
   const continuing = answers.admission === 'continuing';
   const levels = LEVELS[answers.institutionType as InstitutionType];
-  const field = { uid, values: answers, onChange: update };
-  const common = (name: AnswerKey) => ({ uid, name, value: answers[name], onChange: update, error: errors[name] });
+  const field = { uid, values: answers, onChange: update, onBlur: check };
+  const common = (name: AnswerKey) => ({ uid, name, value: answers[name], onChange: update, onBlur: check, error: errors[name] });
 
   return (
     <div ref={top} className="scroll-mt-28 rounded-[2rem] bg-paper-2 p-5 sm:p-10">
@@ -237,15 +250,16 @@ export function ApplicationForm() {
           <motion.div
             key={step}
             custom={direction}
+            // The outgoing step clears quickly so the next one is never held up; the incoming step
+            // settles on a critically damped spring. Forward comes in from the right, back from the left.
             variants={{
               enter: (d: number) => ({ opacity: 0, x: reduce ? 0 : d * 28 }),
-              shown: { opacity: 1, x: 0 },
-              leave: (d: number) => ({ opacity: 0, x: reduce ? 0 : d * -28 }),
+              shown: { opacity: 1, x: 0, transition: { type: 'spring', bounce: 0, duration: 0.4 } },
+              leave: (d: number) => ({ opacity: 0, x: reduce ? 0 : d * -16, transition: { duration: 0.12, ease: EASE_OUT } }),
             }}
             initial="enter"
             animate="shown"
             exit="leave"
-            transition={{ duration: 0.28, ease: EASE_OUT }}
           >
             <h3 ref={heading} tabIndex={-1} className="heading text-[clamp(1.8rem,3vw,2.3rem)] text-ink outline-none">
               {current.title}

@@ -33,11 +33,13 @@ export const NAV: NavItem[] = [
   { id: 'mission', label: 'Mission' },
   { id: 'programs', label: 'Programs' },
   { id: 'scholarship', label: 'Scholarship', path: '/scholarship' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'contact', label: 'Contact', path: '/contact' },
 ];
 
+export const DONATE_LINK: NavItem = { id: 'donate', label: 'Donate', path: '/donate' };
+
 /** Which page is showing. Section links on other pages point back to the home page. */
-export type Page = 'home' | 'scholarship';
+export type Page = 'home' | 'scholarship' | 'donate' | 'contact';
 
 export function navHref(item: NavItem, page: Page): string {
   return item.path ?? (page === 'home' ? `#${item.id}` : `/#${item.id}`);
